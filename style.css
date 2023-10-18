@@ -91,7 +91,8 @@ input {
   padding: 5px 30px;
 }
 
-.box-bookmark {
+.fa-bookmark {
+  color: #469388;
   height: 50px;
   display: block;
   position:absolute;
@@ -122,11 +123,10 @@ input {
 .cover {
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin: 15px 0;
 }
 
 .cover img {
-  height: 80%;
-  width: 80%;
+  max-height: 250px;
   object-fit: contain;
 }
