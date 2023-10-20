@@ -96,7 +96,7 @@ input {
   padding: 5px 30px;
 }
 
-.fa-bookmark {
+.fa-bookmark, .fa-trash {
   color: #469388;
   height: 25px;
   display: block;
@@ -104,6 +104,10 @@ input {
   right: 20px;
   top: 20px;
   cursor: pointer;
+}
+
+.fa-trash {
+  color: #df5a4b;
 }
 
 .box-title {

@@ -12,7 +12,7 @@ if (!bookList) {
     bookId: '2',
     bookAuthor: 'Un 2e auteur',
     bookDescription: 'Une 2e description',
-    bookImage: 'Une 2e image'
+    bookImage: 'images/unavailable.png'
   }];
 };
 
@@ -22,23 +22,43 @@ function saveToStorage() {
 
 console.log(bookList);
 
-function displayBookList() {
-  let myBookList = document.getElementById('content');
-  myBookList = `
-  <div class="result-box js-result-box">
-    <div>
-      <i class="fa-regular fa-bookmark js-bookmark"></i>
-    </div>
-    <p class="box-title">Titre : ${bookList[0].bookTitle}</p>
-    <p class="box-id">Id : ${bookList[0].bookId}</p>
-    <p class="box-author">Auteur : ${bookList[0].bookAuthor}</p>
-    <p class="box-description">Description : ${bookList[0].bookDescription}</p>
-    <div class="cover">
-      <img src="${bookList[0].bookImage}">
-    </div>
-  </div>`
+function findBookToRemove(bookId) {
+  bookList = bookList.filter(object => {
+    return object.bookId !== bookId;
+  });
+};
 
-  document.getElementById('content').insertAdjacentHTML('beforeend', myBookList);
+function displayBookList() {
+
+  document.querySelector('.js-myBooklist-box').innerHTML = '';
+
+  for (let i=0; i < bookList.length; i++) {
+    let myBookList = `
+    <div class="result-box js-result-box">
+      <div id="${bookList[i].bookId}" class="js-trash"
+        data-book-id="${bookList[i].bookId}">
+        <i class="fa-solid fa-trash"></i>
+      </div>
+      <p class="box-title">Titre : ${bookList[i].bookTitle}</p>
+      <p class="box-id">Id : ${bookList[i].bookId}</p>
+      <p class="box-author">Auteur : ${bookList[i].bookAuthor}</p>
+      <p class="box-description">Description : ${bookList[i].bookDescription}</p>
+      <div class="cover">
+        <img src="${bookList[i].bookImage}">
+      </div>
+    </div>`
+  
+    document.querySelector('.js-myBooklist-box').insertAdjacentHTML('beforeend', myBookList);
+  };
+
+  document.querySelectorAll('.js-trash').forEach(item => {
+    item.addEventListener('click', event => {
+      findBookToRemove(item.dataset.bookId);
+      document.getElementById(item.dataset.bookId).innerHTML = '<i class="fa-regular fa-bookmark"></i>';
+      displayBookList();
+      console.log(bookList);
+    });
+  });
 };
 
 displayBookList();
@@ -96,7 +116,6 @@ async function searchAPI() {
 
     const response = await fetch(url);
     const books = await response.json();
-    //console.log(books);
 
     books.items.forEach((book) => {
 
@@ -116,12 +135,24 @@ async function searchAPI() {
       let bookId = book.id;
       let bookAuthor = book.volumeInfo.authors[0];
 
+      const matchingBook = bookList.find(book => book.bookId === bookId);
+
+      let bookmarkType = '';
+      if (matchingBook) {
+        bookmarkType = 'solid'
+      } else {
+        bookmarkType = 'regular'
+      }
+
       const newResult = `
         <div class="result-box js-result-box">
-          <div class="js-bookmark"
+          <div id="${bookId}" class="js-bookmark"
+            data-book-title="${bookTitle}"
             data-book-id="${bookId}"
-            data-book-author="${bookAuthor}">
-            <i class="fa-regular fa-bookmark js-bookmark"></i>
+            data-book-author="${bookAuthor}"
+            data-book-description="${bookDescription}"
+            data-book-image="${bookImage}">
+            <i class="fa-${bookmarkType} fa-bookmark"></i>
           </div>
           <p class="box-title">Titre : ${bookTitle}</p>
           <p class="box-id">Id : ${bookId}</p>
@@ -138,10 +169,26 @@ async function searchAPI() {
 
     document.querySelectorAll('.js-bookmark').forEach(item => {
       item.addEventListener('click', event => {
-        console.log(item.dataset.bookId);
-        console.log(item.dataset.bookAuthor);
-      })
-    })
+
+        const matchingBook = bookList.find(book => book.bookId === item.dataset.bookId)
+
+        if (matchingBook) {
+          alert('Existe déjà');
+        } else {
+        bookList.push({
+          bookTitle: item.dataset.bookTitle,
+          bookId: item.dataset.bookId,
+          bookAuthor: item.dataset.bookAuthor,
+          bookDescription: item.dataset.bookDescription,
+          bookImage: item.dataset.bookImage
+        });
+        item.innerHTML = `<i class="fa-solid fa-bookmark"></i>`
+        displayBookList();
+        console.log(bookList);
+        };
+
+      });
+    });
     
 };
 
