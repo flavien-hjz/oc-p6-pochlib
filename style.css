@@ -67,6 +67,7 @@ input {
   border-radius: 3px;
   color: white;
   cursor: pointer;
+  width: 190px;
   padding: 10px 40px;
   margin: 0px 40px;
 }
@@ -145,4 +146,23 @@ input {
   display: block;
   text-align: center;
   color: #df5a4b;
+}
+
+@media all and (max-width: 750px) {
+  body {
+    margin: 15px;
+  }
+
+  .result-box-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .buttons-box {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button {
+    margin: 5px 0 10px;
+  }
 }
