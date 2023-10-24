@@ -3,6 +3,21 @@ import { addBook } from "./search.js";
 addBook();
 
 export let bookList = JSON.parse(localStorage.getItem('bookList'));
+if (!bookList) {
+  bookList = [{
+    bookTitle: 'Un titre',
+    bookId: '1',
+    bookAuthor: 'Un auteur',
+    bookDescription: 'Une description',
+    bookImage: 'images/unavailable.png'
+  }, {
+    bookTitle: 'Un 2e titre',
+    bookId: '2',
+    bookAuthor: 'Un 2e auteur',
+    bookDescription: 'Une 2e description',
+    bookImage: 'images/unavailable.png'
+  }];
+};
 console.log(bookList);
 
 export function displayBookList() {
@@ -51,22 +66,6 @@ function findBookToRemove(bookId) {
 };
 
 displayBookList();
-
-if (!bookList) {
-  bookList = [{
-    bookTitle: 'Un titre',
-    bookId: '1',
-    bookAuthor: 'Un auteur',
-    bookDescription: 'Une description',
-    bookImage: 'images/unavailable.png'
-  }, {
-    bookTitle: 'Un 2e titre',
-    bookId: '2',
-    bookAuthor: 'Un 2e auteur',
-    bookDescription: 'Une 2e description',
-    bookImage: 'images/unavailable.png'
-  }];
-};
 
 export function saveToStorage() {
   localStorage.setItem('bookList', JSON.stringify(bookList));

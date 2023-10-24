@@ -16,8 +16,8 @@ function displaySearchSection() {
       <input type="text" id="author" name="author" class="js-author-input" placeholder="Renseignez l'auteur">
     </form>
     <div class="buttons-box">
-      <button class="button green-button js-search-button">Rechercher</button>
-      <button class="button red-button js-cancel-button">Annuler</button>
+      <button class="button--green js-search-button">Rechercher</button>
+      <button class="button--red js-cancel-button">Annuler</button>
     </div>
     <span id="error-message"></span>`;
   cancelSearch();
@@ -70,7 +70,7 @@ function cancelSearch() {
 function hideSearchSection() {
   document.querySelector('.js-search-container').innerHTML = `
     <div class="buttons-box">
-      <button class="button green-button js-add-button">Ajouter un livre</button>
+      <button class="button--green js-add-button">Ajouter un livre</button>
     </div>`;
 };
 
