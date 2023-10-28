@@ -1,24 +1,48 @@
 import { addBook } from "./search.js";
 
+const myBooksElement = document.getElementById('myBooks');
+const titleContainerElement = document.createElement('div');
+titleContainerElement.classList.add('title-container');
+const logoImage = document.createElement('img');
+logoImage.src = "images/logo-detoure.png";
+const mainTitle = document.querySelector('.title');
+myBooksElement.prepend(titleContainerElement);
+titleContainerElement.prepend(logoImage);
+titleContainerElement.append(mainTitle);
+
+const subTitles = document.querySelectorAll('h2');
+for (const subTitle of subTitles) {
+  subTitle.classList.add('sub-title');
+};
+
+const searchContainerElement = document.createElement('div');
+searchContainerElement.classList.add('js-search-container');
+const buttonsBoxElement = document.createElement('div');
+buttonsBoxElement.classList.add('buttons-box');
+const addButton = document.createElement('button');
+addButton.classList.add('button--green', 'js-add-button');
+addButton.textContent = 'Ajouter un livre';
+myBooksElement.insertBefore(searchContainerElement, document.querySelector('hr'));
+searchContainerElement.append(buttonsBoxElement);
+buttonsBoxElement.append(addButton);
+
+const contentElement = document.getElementById('content');
+const resultSectionElement = document.createElement('div');
+resultSectionElement.classList.add('js-result-section');
+myBooksElement.insertBefore(resultSectionElement, contentElement);
+
+const resultBoxGridElement = document.createElement('div');
+resultBoxGridElement.classList.add('result-box-grid', 'js-myBooklist-box');
+contentElement.append(resultBoxGridElement);
+
 addBook();
 
-export let bookList = JSON.parse(localStorage.getItem('bookList'));
-if (!bookList) {
-  bookList = [{
-    bookTitle: 'Un titre',
-    bookId: '1',
-    bookAuthor: 'Un auteur',
-    bookDescription: 'Une description',
-    bookImage: 'images/unavailable.png'
-  }, {
-    bookTitle: 'Un 2e titre',
-    bookId: '2',
-    bookAuthor: 'Un 2e auteur',
-    bookDescription: 'Une 2e description',
-    bookImage: 'images/unavailable.png'
-  }];
+export let bookList = new Array;
+const storage = JSON.parse(localStorage.getItem('bookList'));
+if (storage) {
+  bookList = storage;
+  displayBookList();
 };
-console.log(bookList);
 
 export function displayBookList() {
 
@@ -64,8 +88,6 @@ function findBookToRemove(bookId) {
     return object.bookId !== bookId;
   });
 };
-
-displayBookList();
 
 export function saveToStorage() {
   localStorage.setItem('bookList', JSON.stringify(bookList));
